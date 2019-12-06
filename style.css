@@ -1,0 +1,74 @@
+
+body {
+  background-color: #000;
+  color: white;
+}
+
+
+.title {
+  color: #FFF;
+  font-weight: bold;
+  font-size: 25px;
+  margin-bottom: 5px;
+}
+
+.game-window {
+  border: 2px solid #FFF;
+}
+
+.game-window > .node {
+  background-color: #000;
+}
+
+.footer-debug {
+  margin-top: 10px;
+}
+
+.coords {
+  color: #FFF;
+  display: inline;
+}
+
+i {
+  color: #FFF;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+i:hover {
+  color: rgb(218, 191, 41);
+}
+
+
+.game {
+  display: flex;
+}
+
+.game > .buttons-container {
+  display: flex;
+  flex-direction: column;
+}
+
+table {
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+  border-spacing: 0px;
+}
+
+/* td {
+  border: 1px solid #FFF;
+} */
+
+.pois {
+  background-color: #f70808;
+  border-radius: 10px;
+}
+
+.snake-head {
+  background-color: #779327;
+}
+
+.snake {
+  background-color: #9ec13b;
+}

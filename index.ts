@@ -18,6 +18,10 @@ startup();
 
 function startup(): void {
   grid = Array.from(Array(gridSize).fill(0), () => new Array(gridSize).fill(0));
+  direction = '';
+  let snake = null;
+
+ 
 
   gameWindow.style.width = `${gridSize * nodeWidth}px`;
   gameWindow.style.height = `${gridSize * nodeWidth}px`;
@@ -25,13 +29,13 @@ function startup(): void {
   drawPois();
   
   const ranCoords = getRandomCoords();
-  let snake = drawSnake(ranCoords.x, ranCoords.y);
+  snake = drawSnake(ranCoords.x, ranCoords.y);
 
   setInterval( () => {
     if(snake) {
       clearSnake();
 
-      console.log(snake);
+      //console.log(snake);
 
       switch(direction) {
         case 'ArrowUp':

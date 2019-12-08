@@ -7,6 +7,8 @@ const gridSize = 30;   // unit
 let direction: string; // Arrows -> [ArrowUp, ArrowDown, ArrowRight, ArrowLeft]
 let grid: number[][];
 
+let intervalHandle: number;
+
 const gameWindow: HTMLElement = document.querySelector('.game-window');
 const resetBtn: HTMLElement = document.querySelector('.reset');
 const coordsDebug: HTMLElement = document.querySelector('.coords')
@@ -21,8 +23,10 @@ function startup(): void {
   direction = '';
   let snake = null;
 
- 
-
+  if (intervalHandle) {
+    window.clearInterval(intervalHandle);
+  }
+  
   gameWindow.style.width = `${gridSize * nodeWidth}px`;
   gameWindow.style.height = `${gridSize * nodeWidth}px`;
 
@@ -31,7 +35,7 @@ function startup(): void {
   const ranCoords = getRandomCoords();
   snake = drawSnake(ranCoords.x, ranCoords.y);
 
-  setInterval( () => {
+  intervalHandle = setInterval( () => {
     if(snake) {
       clearSnake();
 

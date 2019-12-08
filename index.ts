@@ -1,11 +1,33 @@
 // Import stylesheets
 import './style.css';
 
+interface Coords {
+  x: number;
+  y: number;
+}
+
+enum Direction {
+  Up = 'ArrowUp',
+  Down = 'ArrowDown',
+  Left = 'ArrowLeft',
+  Right = 'ArrowRight',
+  Stopped = ''
+}
+
+enum EntityType {
+  nothing = 0,
+  snake = 1,
+  pois = 2,
+  snakehead = 3
+}
+
 const nodeWidth = 15;  // px
 const gridSize = 30;   // unit
 
 let direction: string; // Arrows -> [ArrowUp, ArrowDown, ArrowRight, ArrowLeft]
 let grid: number[][];
+let tailLength = 0;
+
 
 let intervalHandle: number;
 
@@ -20,8 +42,9 @@ startup();
 
 function startup(): void {
   grid = Array.from(Array(gridSize).fill(0), () => new Array(gridSize).fill(0));
-  direction = '';
+  direction = Direction.Stopped;
   let snake = null;
+  tailLength = 0;
 
   if (intervalHandle) {
     window.clearInterval(intervalHandle);
@@ -42,16 +65,16 @@ function startup(): void {
       //console.log(snake);
 
       switch(direction) {
-        case 'ArrowUp':
+        case Direction.Up:
           snake = drawSnake(snake.x - 1, snake.y);
           break;
-        case 'ArrowDown':
+        case Direction.Down:
           snake = drawSnake(snake.x + 1, snake.y);
           break;
-        case 'ArrowLeft':
+        case Direction.Left:
           snake = drawSnake(snake.x, snake.y - 1);
           break;
-        case 'ArrowRight':
+        case Direction.Right:
           snake = drawSnake(snake.x, snake.y + 1);
           break;
       }
@@ -69,7 +92,27 @@ function drawSnake(x: number, y: number): {x: number, y: number}  {
     }
 
     if (currentNodeValue === 2) {
+      tailLength += 1;
       drawPois();
+    }
+
+    if (tailLength > 0) {
+      for (let i = 0; i < tailLength; i++) {
+        switch (direction) {
+          case Direction.Up:
+            grid[x + i][y] = 1;
+            break;
+          case Direction.Down:
+            grid[x - i][y] = 1;
+            break;
+          case Direction.Left:
+            grid[x][y + i] = 1;
+            break;
+          case Direction.Right:
+            grid[x][y - i] = 1;
+            break;
+        }
+      }
     }
 
     printCoords(x, y);
@@ -157,3 +200,4 @@ function getRandomInt(min: number, max: number): number {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
+

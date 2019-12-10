@@ -97,7 +97,7 @@ function drawSnake(x: number, y: number): {x: number, y: number}  {
     }
 
     if (tailLength > 0) {
-      for (let i = 0; i < tailLength; i++) {
+      for (let i = 0; i <= tailLength; i++) {
         switch (direction) {
           case Direction.Up:
             grid[x + i][y] = 1;
@@ -130,7 +130,7 @@ function drawSnake(x: number, y: number): {x: number, y: number}  {
 function clearSnake(): void {
   for (let x = 0; x < gridSize; x++) {
     for (let y = 0; y < gridSize; y++) {
-      if (grid[x][y] === 3) {
+      if (grid[x][y] === 3 || grid[x][y] === 1) {
         grid[x][y] = 0;
       }
     }

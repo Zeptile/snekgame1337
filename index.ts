@@ -79,7 +79,7 @@ function startup(): void {
           break;
       }
     }
-  }, 50)
+  }, 100)
 }
 
 function drawSnake(x: number, y: number): {x: number, y: number}  {

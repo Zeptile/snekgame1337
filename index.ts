@@ -28,6 +28,7 @@ let direction: string; // Arrows -> [ArrowUp, ArrowDown, ArrowRight, ArrowLeft]
 let grid: number[][];
 let tailLength = 0;
 
+let tail: Coords[] = [];
 
 let intervalHandle: number;
 
@@ -56,36 +57,34 @@ function startup(): void {
   drawPois();
   
   const ranCoords = getRandomCoords();
-  snake = drawSnake(ranCoords.x, ranCoords.y);
+  snake = drawSnake({x: ranCoords.x, y: ranCoords.y}, null);
 
   intervalHandle = setInterval( () => {
     if(snake) {
       clearSnake();
 
-      //console.log(snake);
-
       switch(direction) {
         case Direction.Up:
-          snake = drawSnake(snake.x - 1, snake.y);
+          snake = drawSnake({x: snake.x - 1, y: snake.y}, snake);
           break;
         case Direction.Down:
-          snake = drawSnake(snake.x + 1, snake.y);
+          snake = drawSnake({x: snake.x + 1, y: snake.y}, snake);
           break;
         case Direction.Left:
-          snake = drawSnake(snake.x, snake.y - 1);
+          snake = drawSnake({x: snake.x, y: snake.y - 1}, snake);
           break;
         case Direction.Right:
-          snake = drawSnake(snake.x, snake.y + 1);
+          snake = drawSnake({x: snake.x, y: snake.y + 1}, snake);
           break;
       }
     }
   }, 100)
 }
 
-function drawSnake(x: number, y: number): {x: number, y: number}  {
+function drawSnake(nextSnake: Coords, currentSnake: Coords): Coords {
 
-  if (x > -1 && y > -1 && x < gridSize && y < gridSize) {
-    const currentNodeValue = grid[x][y];
+  if (nextSnake.x > -1 && nextSnake.y > -1 && nextSnake.x < gridSize && nextSnake.y < gridSize) {
+    const currentNodeValue = grid[nextSnake.x][nextSnake.y];
 
     if (currentNodeValue === 1) {
       console.error('YOU HIT YOURSELF IDIOT');
@@ -96,35 +95,35 @@ function drawSnake(x: number, y: number): {x: number, y: number}  {
       drawPois();
     }
 
-    if (tailLength > 0) {
-      for (let i = 0; i <= tailLength; i++) {
-        switch (direction) {
-          case Direction.Up:
-            grid[x + i][y] = 1;
-            break;
-          case Direction.Down:
-            grid[x - i][y] = 1;
-            break;
-          case Direction.Left:
-            grid[x][y + i] = 1;
-            break;
-          case Direction.Right:
-            grid[x][y - i] = 1;
-            break;
-        }
-      }
+    printCoords(nextSnake.x, nextSnake.y);
+
+    grid[nextSnake.x][nextSnake.y] = 3;
+
+    if (currentSnake) {
+      drawSnakeTail(currentSnake);
     }
-
-    printCoords(x, y);
-
-    grid[x][y] = 3;
 
     drawGrid(grid);
 
-    return {x: x, y: y};
+    return nextSnake;
   }
   
   console.error('OUT_OF_BOUNDS');
+}
+
+function drawSnakeTail(currPos: Coords) {
+  tail.push(currPos);
+  for (var z = 0; z < tailLength; z++) {
+    let coords = tail[z];
+    grid[coords.x][coords.y] = 1;
+    drawGrid(grid);
+  }
+
+  while (tail.length > tailLength) {
+    let coords = tail[0];
+    grid[coords.x][coords.y] = 0;
+    tail.shift();
+  }
 }
 
 function clearSnake(): void {

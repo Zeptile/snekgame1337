@@ -78,22 +78,13 @@ function startup(): void {
           break;
       }
     }
-  }, 100)
+  }, 250)
 }
 
 function drawSnake(nextSnake: Coords, currentSnake: Coords): Coords {
 
   if (nextSnake.x > -1 && nextSnake.y > -1 && nextSnake.x < gridSize && nextSnake.y < gridSize) {
-    const currentNodeValue = grid[nextSnake.x][nextSnake.y];
-
-    if (currentNodeValue === 1) {
-      console.error('YOU HIT YOURSELF IDIOT');
-    }
-
-    if (currentNodeValue === 2) {
-      tailLength += 1;
-      drawPois();
-    }
+    const nextNodeValue = grid[nextSnake.x][nextSnake.y];
 
     printCoords(nextSnake.x, nextSnake.y);
 
@@ -101,6 +92,15 @@ function drawSnake(nextSnake: Coords, currentSnake: Coords): Coords {
 
     if (currentSnake) {
       drawSnakeTail(currentSnake);
+    }
+
+    if (nextNodeValue === 1) {
+      console.error('YOU HIT YOURSELF IDIOT');
+    }
+
+    if (nextNodeValue === 2) {
+      tailLength += 1;
+      drawPois();
     }
 
     drawGrid(grid);

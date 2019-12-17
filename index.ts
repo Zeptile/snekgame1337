@@ -87,7 +87,7 @@ function drawSnake(nextSnake: Coords, currentSnake: Coords): Coords {
   if (nextSnake.x > -1 && nextSnake.y > -1 && nextSnake.x < gridSize && nextSnake.y < gridSize) {
     const nextNodeValue = grid[nextSnake.x][nextSnake.y];
 
-    printCoords(nextSnake.x, nextSnake.y);
+    printCoords({x: nextSnake.x, y: nextSnake.y});
 
     grid[nextSnake.x][nextSnake.y] = 3;
 
@@ -97,6 +97,7 @@ function drawSnake(nextSnake: Coords, currentSnake: Coords): Coords {
 
     if (nextNodeValue === 1) {
       console.error('YOU HIT YOURSELF IDIOT');
+      gameOver();
     }
 
     if (nextNodeValue === 2) {
@@ -116,17 +117,15 @@ function drawSnake(nextSnake: Coords, currentSnake: Coords): Coords {
   }
   
   console.error('OUT_OF_BOUNDS');
+  gameOver();
 }
 
-function drawSnakeTail(currPos: Coords) {
-  tail.push(currPos);
+function drawSnakeTail(nextPos: Coords) {
+  tail.push(nextPos);
   for (var z = 0; z < tailLength; z++) {
     let coords = tail[z];
     grid[coords.x][coords.y] = 1;
-    //drawGrid(grid);
   }
-
-
 }
 
 function clearSnake(): void {
@@ -143,6 +142,14 @@ function drawPois(): void {
   const coords = getRandomCoords();
   grid[coords.x][coords.y] = 2;
   drawGrid(grid);
+}
+
+function gameOver(): void {
+  gameWindow.removeChild(gameWindow.firstChild);
+  let gameoverText = document.createElement('h1');
+  gameoverText.className = 'gameover';
+  gameoverText.innerText = 'GAME OVER';
+  gameWindow.appendChild(gameoverText);
 }
 
 function drawGrid(twoDimensionalArray: number[][]): void {
@@ -181,16 +188,16 @@ function drawGrid(twoDimensionalArray: number[][]): void {
   gameWindow.appendChild(table);
 }
 
-function printCoords(x: number, y: number) {
+function printCoords(coords: Coords) {
   if (coordsDebug.firstChild) {
     coordsDebug.removeChild(coordsDebug.firstChild);
   }
 
-  let txt = document.createTextNode(`(${x}, ${y})`);
+  let txt = document.createTextNode(`(${coords.x}, ${coords.y})`);
   coordsDebug.appendChild(txt);
 }
 
-function getRandomCoords(): {x: number, y: number} {
+function getRandomCoords(): Coords {
   const ranX = getRandomInt(0, gridSize - 1);
   const ranY = getRandomInt(0, gridSize - 1);
 

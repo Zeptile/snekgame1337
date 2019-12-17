@@ -12,8 +12,16 @@ body {
   margin-bottom: 5px;
 }
 
+.gameover {
+  color: red;
+  font-size: 36px;
+}
+
 .game-window {
   border: 2px solid #FFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .game-window > .node {

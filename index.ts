@@ -4,7 +4,7 @@ import * as firebase from 'firebase';
 
 
 var firebaseConfig = {
-  apiKey: "AIzaSyCKlt0LC2CnKA2qnf96uP2Gu2F0uOGQ1SU",
+  apiKey: "",
   authDomain: "snekgame1337.firebaseapp.com",
   databaseURL: "https://snekgame1337.firebaseio.com",
   projectId: "snekgame1337",

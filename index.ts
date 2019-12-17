@@ -26,11 +26,10 @@ const gridSize = 30;   // unit
 
 let direction: string; // Arrows -> [ArrowUp, ArrowDown, ArrowRight, ArrowLeft]
 let grid: number[][];
-let tailLength = 0;
-
 let tail: Coords[] = [];
-
 let intervalHandle: number;
+let tailLength = 0;
+let gameover = false;
 
 const gameWindow: HTMLElement = document.querySelector('.game-window');
 const resetBtn: HTMLElement = document.querySelector('.reset');
@@ -47,6 +46,7 @@ function startup(): void {
   let snake = null;
   tailLength = 0;
   tail = [];
+  gameover = false;
 
   if (intervalHandle) {
     window.clearInterval(intervalHandle);
@@ -105,8 +105,10 @@ function drawSnake(nextSnake: Coords, currentSnake: Coords): Coords {
       drawPois();
     }
 
-    drawGrid(grid);
-
+    if (!gameover) {
+      drawGrid(grid);
+    }
+    
     if (tail.length > tailLength) {
       let coords = tail[0];
       grid[coords.x][coords.y] = 0;
@@ -145,6 +147,8 @@ function drawPois(): void {
 }
 
 function gameOver(): void {
+  gameover = true;
+  window.clearInterval(intervalHandle);
   gameWindow.removeChild(gameWindow.firstChild);
   let gameoverText = document.createElement('h1');
   gameoverText.className = 'gameover';

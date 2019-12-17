@@ -141,7 +141,10 @@ function clearSnake(): void {
 }
 
 function drawPois(): void {
-  const coords = getRandomCoords();
+  let coords = getRandomCoords();
+  while (grid[coords.x][coords.y] !== 0) {
+    coords = getRandomCoords();
+  }
   grid[coords.x][coords.y] = 2;
   drawGrid(grid);
 }

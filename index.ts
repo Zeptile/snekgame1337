@@ -46,6 +46,7 @@ function startup(): void {
   direction = Direction.Stopped;
   let snake = null;
   tailLength = 0;
+  tail = [];
 
   if (intervalHandle) {
     window.clearInterval(intervalHandle);
@@ -78,7 +79,7 @@ function startup(): void {
           break;
       }
     }
-  }, 250)
+  }, 100)
 }
 
 function drawSnake(nextSnake: Coords, currentSnake: Coords): Coords {
@@ -91,7 +92,7 @@ function drawSnake(nextSnake: Coords, currentSnake: Coords): Coords {
     grid[nextSnake.x][nextSnake.y] = 3;
 
     if (currentSnake) {
-      drawSnakeTail(currentSnake);
+      drawSnakeTail(nextSnake);
     }
 
     if (nextNodeValue === 1) {
@@ -105,6 +106,12 @@ function drawSnake(nextSnake: Coords, currentSnake: Coords): Coords {
 
     drawGrid(grid);
 
+    if (tail.length > tailLength) {
+      let coords = tail[0];
+      grid[coords.x][coords.y] = 0;
+      tail.shift();
+    }
+
     return nextSnake;
   }
   
@@ -116,20 +123,16 @@ function drawSnakeTail(currPos: Coords) {
   for (var z = 0; z < tailLength; z++) {
     let coords = tail[z];
     grid[coords.x][coords.y] = 1;
-    drawGrid(grid);
+    //drawGrid(grid);
   }
 
-  while (tail.length > tailLength) {
-    let coords = tail[0];
-    grid[coords.x][coords.y] = 0;
-    tail.shift();
-  }
+
 }
 
 function clearSnake(): void {
   for (let x = 0; x < gridSize; x++) {
     for (let y = 0; y < gridSize; y++) {
-      if (grid[x][y] === 3 || grid[x][y] === 1) {
+      if (grid[x][y] === 3) {
         grid[x][y] = 0;
       }
     }

@@ -270,8 +270,6 @@ function drawLeaderboard(): void {
     });
   });
 
-  console.log(players);
-
   players.sort((s1, s2) => (s1.score < s2.score) ? 1 : -1);
   players = players.slice(0, 10);
   let count = 0;

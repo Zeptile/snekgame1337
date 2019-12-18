@@ -261,53 +261,52 @@ function drawLeaderboard(): void {
   }
 
   db.collection("players").get().then((querySnapshot) => {
-  let players: Player[] = [];
-  querySnapshot.forEach((doc) => {
-    let player = doc.data();
-    players.push({
-      name: player.name,
-      score: player.score,
+    let players: Player[] = [];
+    querySnapshot.forEach((doc) => {
+      let player = doc.data();
+      players.push({
+        name: player.name,
+        score: player.score,
+      });
+    });
+
+    players.sort((s1, s2) => (s1.score < s2.score) ? 1 : -1);
+    players = players.slice(0, 10);
+    let count = 0;
+
+    players.forEach((player) => {
+      count++;
+      let row = document.createElement('tr');
+
+      let positionCell = document.createElement('td');
+      positionCell.innerText = count.toString();
+      positionCell.className = 'leaderboard-node';
+      row.appendChild(positionCell);
+      let nameCell = document.createElement('td');
+      nameCell.innerText = player.name
+      nameCell.className = 'leaderboard-node';
+      row.appendChild(nameCell);
+      let scoreCell = document.createElement('td');
+      scoreCell.innerText = player.score.toString()
+      scoreCell.className = 'leaderboard-node';
+      row.appendChild(scoreCell);
+
+      tbody.appendChild(row);
     });
   });
-
-  players.sort((s1, s2) => (s1.score < s2.score) ? 1 : -1);
-  players = players.slice(0, 10);
-  let count = 0;
-
-  players.forEach((player) => {
-    count++;
-    let row = document.createElement('tr');
-
-    let positionCell = document.createElement('td');
-    positionCell.innerText = count.toString();
-    positionCell.className = 'leaderboard-node';
-    row.appendChild(positionCell);
-    let nameCell = document.createElement('td');
-    nameCell.innerText = player.name
-    nameCell.className = 'leaderboard-node';
-    row.appendChild(nameCell);
-    let scoreCell = document.createElement('td');
-    scoreCell.innerText = player.score.toString()
-    scoreCell.className = 'leaderboard-node';
-    row.appendChild(scoreCell);
-
-    tbody.appendChild(row);
-  });
-});
 }
 
 function postScore(): void {
+  postScoreElement.style.display = 'none';
   db.collection("players").add({
     name: name.value,
     score: tailLength
   }).then((docRef) => {
       console.log("Document written with ID: ", docRef.id);
-      postScoreElement.style.display = 'none';
       drawLeaderboard();
   })
   .catch((error) => {
       console.error("Error adding document: ", error);
-      postScoreElement.style.display = 'none';
       drawLeaderboard();
   });
 }

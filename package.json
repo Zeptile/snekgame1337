@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@firebase/app": "^0.5.0",
-    "firebase": "7.6.0"
+    "firebase": "7.6.0",
+    "lodash": "4.17.15"
   }
 }

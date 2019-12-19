@@ -65,8 +65,13 @@ const submitScoreBtn: HTMLElement = document.querySelector('.submit-score');
 const tbody: HTMLElement = document.querySelector('.tbody');
 
 resetBtn.addEventListener('click', startup);
-document.addEventListener('keydown', (e) => direction = e.code);
 submitScoreBtn.addEventListener('click', postScore);
+
+document.addEventListener('keydown', (e) => {
+  if (!isOppositeDirection(e.code)) {
+    direction = e.code;
+  } 
+});
 
 startup();
 drawLeaderboard();
@@ -128,7 +133,7 @@ function drawSnake(nextSnake: Coords, currentSnake: Coords): Coords {
     }
 
     if (nextNodeValue === EntityType.Snake) {
-      console.error('YOU HIT YOURSELF IDIOT');
+      console.error('SELF_HIT');
       gameOver();
     }
 
@@ -315,5 +320,18 @@ function getRandomInt(min: number, max: number): number {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
+function isOppositeDirection(nextDirection: string): boolean {
+  switch(nextDirection) {
+    case Direction.Up:
+      return direction === Direction.Down;
+    case Direction.Down:
+      return direction === Direction.Up;
+    case Direction.Left:
+      return direction === Direction.Right;
+    case Direction.Right:
+      return direction === Direction.Left;
+  }
 }
 

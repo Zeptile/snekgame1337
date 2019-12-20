@@ -265,6 +265,7 @@ function drawLeaderboard(): void {
     tbody.removeChild(tbody.firstChild);
   }
 
+
   db.collection("players").get().then((querySnapshot) => {
     let players: Player[] = [];
     querySnapshot.forEach((doc) => {
